@@ -17,7 +17,7 @@ macro_rules! day_callback {
         None
     };
     ($callback:ident) => {
-        Some((|input| $callback(input).map(|x| x.to_string())) as (fn(&str) -> Result<String>))
+        Some((|input| $callback(input).map(|x| x.to_string())) as fn(&str) -> Result<String>)
     };
 }
 #[allow(unused_macros)]
@@ -29,12 +29,12 @@ macro_rules! assert_results {
                 $fn($input).expect("function should run without error"),
                 $expected
             );
-        )+;
+        )+
     };
 }
 
 use crate::{Error, Result};
-use reqwest::{Client, StatusCode};
+use reqwest::{blocking::Client, StatusCode};
 use colored::*;
 use std::collections::{BTreeMap, HashMap};
 use std::time::{Duration, Instant};
@@ -106,7 +106,7 @@ impl Framework {
         }
         let token = self.token.as_ref().ok_or(Error::MissingSessionToken)?;
 
-        let mut response = client
+        let response = client
             .get(url)
             .header("cookie", format!("session={}", token))
             .send()?;

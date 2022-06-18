@@ -1,4 +1,4 @@
-#![feature(stmt_expr_attributes, drain_filter, try_from)]
+#![feature(stmt_expr_attributes, drain_filter)]
 #![allow(unused_imports)]
 
 extern crate colored;
@@ -27,7 +27,7 @@ mod framework;
 
 use colored::*;
 use crate::framework::Framework;
-use reqwest::Client;
+use reqwest::blocking::Client;
 use std::env;
 
 pub(crate) use crate::error::Error;

@@ -19,7 +19,7 @@ bitflags! {
         const N = 0b0100;
         const S = 0b1000;
 
-        const None = 0;
+        const NONE = 0;
     }
 }
 
@@ -32,7 +32,7 @@ impl FromStr for Layout {
     type Err = Error;
     fn from_str(s: &str) -> Result<Layout> {
         let mut rooms = HashMap::new();
-        rooms.insert(Vec2::new(0, 0), Room::None);
+        rooms.insert(Vec2::new(0, 0), Room::NONE);
 
         if s.len() < 2 {
             return Err(Error::Input("expected some input"));
@@ -69,7 +69,7 @@ impl FromStr for Layout {
                 };
                 std::mem::drop(current_room);
                 pos += offset;
-                *rooms.entry(pos).or_insert(Room::None) |= new_room;
+                *rooms.entry(pos).or_insert(Room::NONE) |= new_room;
             }
             Ok(())
         }

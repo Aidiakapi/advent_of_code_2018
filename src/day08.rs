@@ -7,7 +7,7 @@ day!(
 
 #[derive(Debug, Clone)]
 struct Node {
-    node_index: usize,
+    // node_index: usize,
     children: Vec<Node>,
     metadata: Vec<usize>,
 }
@@ -18,16 +18,12 @@ fn parse_nodes(input: &str) -> Result<Node> {
         .map(|s| Ok(s.parse()?))
         .collect::<Result<Vec<_>>>()?;
 
-    let mut node_index = 0;
-    fn parse_node(iter: &mut impl Iterator<Item = usize>, node_index: &mut usize) -> Result<Node> {
-        let current_index = *node_index;
-        *node_index += 1;
+    fn parse_node(iter: &mut impl Iterator<Item = usize>) -> Result<Node> {
         let child_count = iter.next().ok_or(Error::Input("unexpected end of node"))?;
         let meta_count = iter.next().ok_or(Error::Input("unexpected end of node"))?;
         Ok(Node {
-            node_index: current_index,
             children: (0..child_count)
-                .map(|_| parse_node(iter, node_index))
+                .map(|_| parse_node(iter))
                 .collect::<Result<_>>()?,
             metadata: (0..meta_count)
                 .map(|_| iter.next().ok_or(Error::Input("unexpected end of node")))
@@ -35,7 +31,7 @@ fn parse_nodes(input: &str) -> Result<Node> {
         })
     }
 
-    parse_node(&mut nrs.into_iter(), &mut node_index)
+    parse_node(&mut nrs.into_iter())
 }
 
 fn part1(input: &str) -> Result<usize> {
